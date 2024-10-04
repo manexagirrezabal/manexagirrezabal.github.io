@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Flashcards</title>
+	<style>
+		.squares {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			margin: 20px;
+		}
+		
+		.square {
+			width: 100px;
+			height: 100px;
+			background-color: blue;
+			border-radius: 10px;
+			cursor: pointer;
+			margin: 10px;
+			position: relative;
+			text-align: center;
+			vertical-align: middle;
+			line-height: 100px;  
+			color:white;
+			font-size:25;
+		}
+		
+		.flashcard {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: white;
+			border-radius: 10px;
+			padding: 20px;
+			display: none;
+		}
+	</style>
+</head>
+<body onload="">
+	<div id="scoresquare"><h1>SCORE:</h1><h1 id="score">0</h1></div>
+	<div id="numberofinterestsquare"><h1>Your number of interest:</h1><h1 id="numberofinterest">0</h1></div>
+	<div class="squares" id="squareplace">
+		<label for="howmany">How many:</label>
+	  <input type="number" id="howmany" name="howmany" value="0">
+  	<br/><br/>
+  <label for="minim">Min:</label>
+  <input type="number" id="minim" name="minim" value="0">
+  <br/><br/>
+  <label for="maxim">Max:</label>
+  <input type="number" id="maxim" name="maxim" value="0">
+  <label for="maxim">Number of interest:</label>
+  <input type="number" id="yournumber" name="maxim" value="0">
+  <input type="button" onclick="load_everything_button()" value="Send"/>
+  <br/><br/>
+
+	</div>
+	
+	<script>
+
+		function load_everything_button () {
+			const howmany = document.getElementById("howmany").value;
+			const minim   = document.getElementById("minim").value;
+			const maxim   = document.getElementById("maxim").value;
+			const yournumber   = document.getElementById("yournumber").value;
+			load_everything(howmany,minim,maxim, yournumber);
+		}
+		function load_everything(howmany, minim, maxim, yournumber) {
+
+			minim = parseInt(minim);
+			maxim = parseInt(maxim);
+			howmany = parseInt(howmany);
+			yournumber = parseInt(yournumber);
+
+			document.getElementById('numberofinterest').innerHTML = yournumber;
+
+			const arr = [];
+			for (let i = 0; i < howmany; i++) {
+				val = Math.floor(Math.random() * (maxim - minim) + minim)
+   				arr.push(val);
+			}
+			arr.push(yournumber);
+			arr.sort((a, b) => a - b);
+//			alert (howmany);
+			howmany = parseInt(howmany)+1
+
+//			alert (arr);
+
+			place = document.getElementById("squareplace");
+			place.innerHTML = "";
+
+			for (let i = 0; i < howmany; i++) {
+				const squareDiv = document.createElement('div');
+				squareDiv.className = 'square';
+				squareDiv.onclick = function() {
+		  		showFlashcard(this, arr[i]);
+				};
+				place.append(squareDiv)
+			}
+	//		alert(arr);
+		}
+
+		function showFlashcard(square, number) {
+//			alert(square.style);
+//			var flashcard = square.querySelector('.flashcard');
+//			square.style.display = 'block';
+			square.innerHTML = `<h2>${number}</h2>`;
+//			alert (number);
+//			alert (numberofinterest);
+			noi = parseInt(document.getElementById("numberofinterest").innerHTML);
+			if (number == noi) {
+				alert ("Found it!");
+			}
+			var score  = parseInt(document.getElementById("score").innerHTML);
+			score = score + 1;
+			document.getElementById("score").innerHTML = score;
+			square.addEventListener('click', function() {
+//				square.style.display = 'none';
+				square.innerHTML = "";
+			});
+		}
+	</script>
+</body>
+</html>
